@@ -23,7 +23,7 @@ Framework de tests unitaires pour PHP
 ### Postman : 
 Outil de test et de documentation des APIs
 ## Installation
-Cloner le repository : git clone https://github.com/votre-repository.git
+Cloner le repository : git clone https://github.com/Ayounsni/MarocExplore
 Installer les dépendances : composer install
 Configurer le fichier .env avec les informations de connexion à la base de données
 Exécuter les migrations : php artisan migrate
