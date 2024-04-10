@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Itineraire;
 use App\Models\Destination;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ItineraireController extends Controller
 {
@@ -73,8 +74,8 @@ class ItineraireController extends Controller
             return response()->json(['message' => 'Itinéraire non trouvé'], 404);
         }
     
-        if ($itineraire->user_id !== Auth::id()) {
-            return response()->json(['message' => 'Vous n\'êtes pas autorisé à mettre à jour cet itinéraire'], 403);
+        if ($itineraire->id_user !== auth()->user()->id) {
+            return response()->json(['message' => 'Vous n\'êtes pas autorisé à mettre à jour cet itinéraire'], 402);
         }
         $itineraire->update($request->all());
         return $itineraire;
@@ -87,13 +88,12 @@ class ItineraireController extends Controller
             return response()->json(['message' => 'Itinéraire non trouvé'], 404);
         }
     
-        if ($itineraire->user_id !== Auth::id()) {
+        if ($itineraire->id_user !== auth()->user()->id) {
             return response()->json(['message' => 'Vous n\'êtes pas autorisé à supprimer cet itinéraire'], 403);
         }
 
         Itineraire::destroy($id);
         
-
         return response()->json(['message' => 'Itinéraire suprimmer avec succès'], 201);
     }
     public function search(Request $request)
@@ -145,13 +145,13 @@ class ItineraireController extends Controller
     
        $query = Itineraire::query();
 
-       $duree = $request->input('duree');
+       $dure = $request->input('dure');
 
-    if ($duree === 'inferieure7') {
+    if ($dure === 'inferieure7') {
         $query->where('dure', '<', 7);
-    } elseif ($duree === 'superieure7') {
+    } elseif ($dure === 'superieure7') {
         $query->where('dure', '>', 7);
-    } elseif ($duree === 'egal2') {
+    } elseif ($dure === 'egal2') {
         $query->where('dure', '=', 2);
     }
 

@@ -42,7 +42,7 @@ class UserController extends Controller
 
         if(!$user || !Hash::check($input['password'],$user->password)){
             return response([
-                'message' =>'bad cred'
+                'message' =>'Incorrect login credentials'
             ], 401);
         }
  
