@@ -1,8 +1,19 @@
-import { Outlet, Link, NavLink } from "react-router-dom";
+import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import '../index.css'; 
 import logo from "../assets/kamel.png";
+import { USER } from "../router";
+import { useEffect } from "react";
+import { useUserContext } from "../context/UserContext";
 
-export default function Layout(){
+export default function GuestLayout(){
+    const navigate = useNavigate()
+    const context = useUserContext()
+    useEffect(() => {
+       
+        if (context.authenticated) {
+            navigate(USER);
+        }
+    }, []);
 
     return (
         <>    

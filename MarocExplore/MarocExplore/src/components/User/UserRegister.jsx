@@ -32,15 +32,6 @@ export default function UserLogin(){
           password:"",
         },
       })
-    //   function onSubmit(values) {
-    //     const axios = axiosClient.defaults
-    //     console.log(values,axios)
-    //   }
-    //   const onSubmit = async values => {
-    //     await axiosClient.get('sanctum/csrf-cookie')
-    //     const data = await axiosClient.post('/api/login', values)
-    //     console.log(data)
-    //   };
 
       const {setError, formState: {isSubmitting}} = form
 
@@ -49,6 +40,7 @@ export default function UserLogin(){
          await axiosClient.post('/api/register', values).then(
           (value) => {
             if (value.status === 201) {
+              window.localStorage.setItem('ACCESS_TOKEN', 'test');
               navigate(USER);
             }
           }).catch(({response}) => { 

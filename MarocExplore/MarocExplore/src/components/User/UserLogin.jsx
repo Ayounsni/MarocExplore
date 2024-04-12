@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { axiosClient } from "../../api/axios"
 import { USER } from "../../router/index";
+import { useUserContext } from "../../context/UserContext";
  
 const formSchema = z.object({
   email: z.string().email().min(2).max(30),
@@ -23,7 +24,8 @@ const formSchema = z.object({
 
 
 export default function UserLogin(){
-    const navigate = useNavigate()
+     const {login, setAuthenticated} = useUserContext()
+     const navigate = useNavigate()
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -31,23 +33,15 @@ export default function UserLogin(){
           password:"",
         },
       })
-    //   function onSubmit(values) {
-    //     const axios = axiosClient.defaults
-    //     console.log(values,axios)
-    //   }
-    //   const onSubmit = async values => {
-    //     await axiosClient.get('sanctum/csrf-cookie')
-    //     const data = await axiosClient.post('/api/login', values)
-    //     console.log(data)
-    //   };
-
       const {setError, formState: {isSubmitting}} = form
 
       const onSubmit = async values => {
-        await axiosClient.get('sanctum/csrf-cookie')
-         await axiosClient.post('/api/login', values).then(
+        login(values.email, values.password).then(
           (value) => {
             if (value.status === 201) {
+              
+              setAuthenticated(true)
+              // window.localStorage.setItem('ACCESS_TOKEN', 'test');
               navigate(USER);
             }
           }).catch(({response}) => { 
@@ -56,6 +50,7 @@ export default function UserLogin(){
             message: response.data.message
           })
         })
+   
       }
 
     return <>
