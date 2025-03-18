@@ -25,6 +25,7 @@ use App\Http\Controllers\FavorisController;
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/route', [ItineraireController::class, 'index']);
+Route::get('/routee/{id}', [ItineraireController::class, 'show']);
 Route::post('/search', [ItineraireController::class, 'search']);
 Route::get('/filtrecat/{id}', [ItineraireController::class, 'filterByCategory']);
 Route::post('/filtredur', [ItineraireController::class, 'filterByTime']);

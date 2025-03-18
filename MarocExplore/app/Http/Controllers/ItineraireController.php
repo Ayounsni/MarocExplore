@@ -13,9 +13,16 @@ class ItineraireController extends Controller
 
     public function index()
     {
-        $itineraires = Itineraire::with('destinations')->get();
+        $itineraires = Itineraire::with('destinations')->with('categorie')->get();
 
         return response()->json($itineraires);
+    }
+
+    public function show($id)
+    {
+        $itineraire = Itineraire::with('categorie')->find($id);
+
+        return response()->json($itineraire);
     }
     public function store(Request $request){
 

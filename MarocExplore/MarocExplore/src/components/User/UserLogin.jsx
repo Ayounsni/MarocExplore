@@ -13,7 +13,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { axiosClient } from "../../api/axios"
 import { USER } from "../../router/index";
 import { useUserContext } from "../../context/UserContext";
  
@@ -24,7 +23,7 @@ const formSchema = z.object({
 
 
 export default function UserLogin(){
-     const {login, setAuthenticated} = useUserContext()
+     const {login, setUserToken, setUser} = useUserContext()
      const navigate = useNavigate()
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -36,16 +35,15 @@ export default function UserLogin(){
       const {setError, formState: {isSubmitting}} = form
 
       const onSubmit = async values => {
-        login(values.email, values.password).then(
+       await login(values.email, values.password).then(
           (value) => {
             if (value.status === 201) {
-              
-              setAuthenticated(true)
-              // window.localStorage.setItem('ACCESS_TOKEN', 'test');
+              setUser(value.data.user)
+              setUserToken(value.data.token)
               navigate(USER);
             }
           }).catch(({response}) => { 
-            console.log(response.data.message)      
+            console.log(response)      
           setError('email', {
             message: response.data.message
           })

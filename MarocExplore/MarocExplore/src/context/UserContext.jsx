@@ -1,45 +1,60 @@
 import { createContext, useContext, useState } from "react"
 import UserApi from "../services/Api/User/UserApi"
-import { USER } from "../router/index"
-import { useNavigate } from 'react-router-dom';
 
-// import PropTypes from 'prop-types';
 
 export const UserStateContext = createContext({
     user:{},
-    authenticated: false,
     setUser: () => {},
+    setUserToken: () => {},
+    userToken: () => {},
     logout: () => {},
-    login: (email,passwod) => {},
-    setAuthenticated: () => {},
+    login: () => {},
+    setCategories: () => {}, 
+    categories:{},
+    setItin: () => {}, 
+    itin:{},
 })
 
 export default function UserContext({ children }){
     const  [user, setUser] = useState({})
-    const  [authenticated, _setAuthenticated] = useState(window.localStorage.getItem('AUTHENTICATED'))
+    const  [categories, setCategories] = useState([])
+    const  [itin, setItin] = useState([])
+    const [userToken, _setUserToken]=useState(localStorage.getItem('TOKEN') || '')
+
     // const navigate = useNavigate()
+    const setUserToken = (token) => {
+        if (token) {
+            localStorage.setItem('TOKEN', token)
+        } else {
+            localStorage.removeItem('TOKEN')
+        }
+        _setUserToken(token);
+    }
 
     const login = async (email,password) => {
  
        await UserApi.getCsrf()
+       console.log(UserApi.getCsrf())
      return  UserApi.login(email,password)
     }
     const logout = () => {
-        setUser({})
-        _setAuthenticated(false)
+        setUser({});
+        setUserToken(null);
+       
     }
-    const setAuthenticated = (isAuthenticated)=>{
-       _setAuthenticated(isAuthenticated)
-       window.localStorage.setItem('AUTHENTICATED',isAuthenticated)
-    }
+
     return <>
       <UserStateContext.Provider value={{
         user,
         login,
-        authenticated,
         setUser,
-        setAuthenticated,
-        logout
+        logout,
+        userToken,
+        setUserToken,
+        categories,
+        setCategories,
+        itin,
+        setItin
         
       }}>
         {children}

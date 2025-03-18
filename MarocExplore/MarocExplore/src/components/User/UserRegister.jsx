@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { axiosClient } from "../../api/axios"
+import axiosClient from "../../api/axios.js"
 import { USER } from "../../router/index";
  
 const formSchema = z.object({
@@ -23,7 +23,7 @@ const formSchema = z.object({
 })
 
 
-export default function UserLogin(){
+export default function UserRegister(){
     const navigate = useNavigate()
     const form = useForm({
         resolver: zodResolver(formSchema),
